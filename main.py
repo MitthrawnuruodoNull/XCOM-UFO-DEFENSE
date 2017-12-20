@@ -11,18 +11,18 @@ title = myfont.render("X-COM: UFO DEFENSE", 1, (white))
 #MORE SETTING UP
 display_width = 800
 display_height = 600
-gameDisplay = pygame.display.set_mode((display_width,display_height))
+screen = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('X-COM UFO DEFENSE')
 #ADDING BACKGROUND AND TITLE
 pygame.surface.fill(black)
-screen.blit(title, (100,100))
 #MAIN LOOP STARTS HERE
 done = False
 while done == False:
-      for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-          done = True
-          pygame.quit()
+      screen.blit(title, (100,100))
+      screen.fill(black)
+      pygame.display.flip()
+      
+
         
           
   
