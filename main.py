@@ -62,4 +62,3 @@ while done == False:
     if scene == "game":
         screen.fill(black)
     pygame.display.flip()
-
