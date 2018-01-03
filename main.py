@@ -15,6 +15,7 @@ display_height = 600
 scene = "start"
 screen = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('X-COM UFO DEFENSE')
+#SETTING UP BUTTON CLASS
 class Button(object):
     def __init__(self, x, y, width, height,text,touching,clicked):
         self.x = x
@@ -26,16 +27,19 @@ class Button(object):
         self.touching = touching
         self.clicked = clicked
     def draw(self):
+        #DRAW FUNCTION(MAY NEED WORK ON THE TEXT FORMULA)
         text1 = myfont.render(str(self.text), 1, (black))
         pygame.draw.rect(screen,[255,255,255],self.rect,0)
         screen.blit(text1, (self.x + self.width/3,self.y + self.height/3))
         
     def click(self):
+        #EASY CLICK DETECTION
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             self.touching = True
             print(scene)
         else:
             self.touching = False
+#BUTTONS
 titlescreen = Button(300,300,200,100,"Start",False,False)
 #MAIN LOOP STARTS HERE
 done = False
@@ -45,6 +49,7 @@ while done == False:
       screen.blit(title, (300,50))
       titlescreen.draw()
       titlescreen.click()
+      #EVENTS
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
