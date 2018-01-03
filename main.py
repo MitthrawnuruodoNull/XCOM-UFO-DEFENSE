@@ -1,6 +1,7 @@
 #IMPORTING MODULES
 import pygame
 import random
+import sys
 white = (250,250,250)
 black = (0,0,0)
 #SETTING UP STUFF
@@ -15,25 +16,47 @@ scene = "start"
 screen = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('X-COM UFO DEFENSE')
 class Button(object):
-    def __init__(self, x, y, width, height,text):
+    def __init__(self, x, y, width, height,text,touching,clicked):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.text = text
+        self.rect = pygame.Rect([int(self.x),int(self.y),int(self.width),int(self.height)])
+        self.touching = touching
+        self.clicked = clicked
     def draw(self):
         text1 = myfont.render(str(self.text), 1, (black))
-        pygame.draw.rect(screen,[255,255,255],[int(self.x),int(self.y),int(self.width),int(self.height)],0)
+        pygame.draw.rect(screen,[255,255,255],self.rect,0)
         screen.blit(text1, (self.x + self.width/3,self.y + self.height/3))
         
     def click(self):
-        if self.get_rect.collidepoint(pygame.mouse.get_pos()): 
-            print("hi")
-titlescreen = Button(300,300,200,100,"Start")
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            self.touching = True
+            print(scene)
+        else:
+            self.touching = False
+titlescreen = Button(300,300,200,100,"Start",False,False)
 #MAIN LOOP STARTS HERE
 done = False
 while done == False:
+    if scene == "start":
       screen.fill(white)
       screen.blit(title, (300,50))
       titlescreen.draw()
-      pygame.display.flip()
+      titlescreen.click()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if titlescreen.touching == True and event.type == pygame.MOUSEBUTTONDOWN:
+            titlescreen.clicked = True
+        else:
+            titlescreen.clicked = False
+    if titlescreen.clicked == True:
+        scene = "game"
+    if scene == "game":
+        screen.fill(black)
+        
+    pygame.display.flip()
+
