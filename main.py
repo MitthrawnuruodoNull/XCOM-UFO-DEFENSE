@@ -31,7 +31,6 @@ class Button(object):
         text1 = myfont.render(str(self.text), 1, (black))
         pygame.draw.rect(screen,[255,255,255],self.rect,0)
         screen.blit(text1, (self.x + self.width/3,self.y + self.height/3))
-        
     def click(self):
         #EASY CLICK DETECTION
         if self.rect.collidepoint(pygame.mouse.get_pos()):
