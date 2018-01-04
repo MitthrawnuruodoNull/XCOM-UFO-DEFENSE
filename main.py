@@ -12,6 +12,7 @@ title = myfont.render("X-COM: UFO DEFENSE", 1, (black))
 #MORE SETTING UP
 display_width = 800
 display_height = 600
+SIZE = 25
 scene = "start"
 screen = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('X-COM UFO DEFENSE')
@@ -35,14 +36,26 @@ class Button(object):
         #EASY CLICK DETECTION
         if self.rect.collidepoint(pygame.mouse.get_pos()):
             self.touching = True
-            print(scene)
         else:
             self.touching = False
+#Creating GRID class
+class GridSquare(object):
+    def __init__(self, internal_row, internal_column, touching,clicked):
+        self.internal_row = internal_row
+        self.internal_column = internal_column
+        self.touching = touching
+        self.clicked = clicked
+        self.rect = pygame.Rect([int(self.internal_row),int(self.internal_column),25,25])
+    def draw(self):
+        pygame.draw.rect(screen,[255,0,255],self.rect,0)
 #BUTTONS
+grid = []
+for i in range(100,600,26):
+    for k in range(100,800,26):
+        grid.append(GridSquare(i,k,False,False))    
 titlescreen = Button(300,300,200,100,"Start",False,False)
 #MAIN LOOP STARTS HERE
-done = False
-while done == False:
+while True:
     if scene == "start":
       screen.fill(white)
       screen.blit(title, (300,50))
@@ -61,4 +74,6 @@ while done == False:
         scene = "game"
     if scene == "game":
         screen.fill(black)
+        for grids in grid:
+           grids.draw()
     pygame.display.flip()
