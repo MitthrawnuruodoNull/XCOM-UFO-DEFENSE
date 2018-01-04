@@ -56,7 +56,6 @@ for i in range(100,600,26):
 titlescreen = Button(300,300,200,100,"Start",False,False)
 #MAIN LOOP STARTS HERE
 while True:
-    
     if scene == "start":
       screen.fill(white)
       screen.blit(title, (300,50))
@@ -75,7 +74,6 @@ while True:
         scene = "game"
     if scene == "game":
         screen.fill(black)
-
         for grids in grid:
            grids.draw()
     pygame.display.flip()
