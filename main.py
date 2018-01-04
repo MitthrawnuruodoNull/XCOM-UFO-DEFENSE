@@ -75,7 +75,7 @@ while True:
         scene = "game"
     if scene == "game":
         screen.fill(black)
+
         for grids in grid:
            grids.draw()
-    
     pygame.display.flip()
