@@ -48,12 +48,17 @@ class GridSquare(object):
         self.rect = pygame.Rect([int(self.internal_row),int(self.internal_column),25,25])
     def draw(self):
         pygame.draw.rect(screen,[255,0,255],self.rect,0)
+    def camera(self,up,right):
+        self.internal_row = right+self.internal_row
+        self.internal_column = up+self.internal_column
 #BUTTONS
 grid = []
-for i in range(100,600,26):
-    for k in range(100,800,26):
+for i in range(100,200,26):
+    for k in range(100,200,26):
         grid.append(GridSquare(i,k,False,False))    
 titlescreen = Button(300,300,200,100,"Start",False,False)
+for grids in grid:
+    grids.camera(0,0)
 #MAIN LOOP STARTS HERE
 while True:
     if scene == "start":
@@ -76,4 +81,5 @@ while True:
         screen.fill(black)
         for grids in grid:
            grids.draw()
+           
     pygame.display.flip()
