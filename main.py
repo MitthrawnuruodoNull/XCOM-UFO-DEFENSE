@@ -2,6 +2,7 @@
 import pygame
 import random
 import sys
+
 white = (250,250,250)
 black = (0,0,0)
 #SETTING UP STUFF
@@ -13,6 +14,7 @@ title = myfont.render("X-COM: UFO DEFENSE", 1, (black))
 display_width = 800
 display_height = 600
 SIZE = 25
+keys = [False,False,False,False]
 scene = "start"
 screen = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('X-COM UFO DEFENSE')
@@ -45,13 +47,30 @@ class GridSquare(object):
         self.internal_column = internal_column
         self.touching = touching
         self.clicked = clicked
-        self.rect = pygame.Rect([int(self.internal_row),int(self.internal_column),25,25])
+        self.cameraoffset = [0,0]
+    
     def draw(self):
-        pygame.draw.rect(screen,[255,0,255],self.rect,0)
+        self.rect = pygame.Rect([int(self.internal_row) + self.cameraoffset[0],int(self.internal_column) + self.cameraoffset[1],50,50])
+        pygame.draw.rect(screen,[0,0,255],self.rect,0)
+    def cameraupdate(self):
+        if keys[0] == True:
+            self.internal_column += 4
+            self.cameraoffset[1] = 0
+        elif keys[1] == True:
+            self.internal_row += 4
+            self.cameraoffset[0] = 0
+        elif keys[2] == True:
+            self.internal_column -= 4
+            self.cameraoffset[1] = 0
+        elif keys[3] == True:
+            self.internal_row -= 4
+            self.cameraoffset[0] = 0
+        
 #BUTTONS
 grid = []
-for i in range(100,600,26):
-    for k in range(100,800,26):
+
+for i in range(-100,900,52):
+    for k in range(-100,700,52):
         grid.append(GridSquare(i,k,False,False))    
 titlescreen = Button(300,300,200,100,"Start",False,False)
 #MAIN LOOP STARTS HERE
@@ -70,10 +89,32 @@ while True:
             titlescreen.clicked = True
         else:
             titlescreen.clicked = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+                keys[0] = True
+            elif event.key == pygame.K_a:
+                keys[1] = True
+            elif event.key == pygame.K_s:
+                keys[2] = True
+            elif event.key == pygame.K_d:
+                keys[3] = True
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_w:
+                keys[0]=False
+            elif event.key == pygame.K_a:
+                keys[1]=False
+            elif event.key == pygame.K_s:
+                keys[2]=False
+            elif event.key == pygame.K_d:
+                keys[3]=False
+            elif event.key == pygame.K_SPACE:
+                shooting = False
     if titlescreen.clicked == True:
         scene = "game"
     if scene == "game":
         screen.fill(black)
         for grids in grid:
+           grids.cameraupdate()
            grids.draw()
+           
     pygame.display.flip()
