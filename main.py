@@ -1,8 +1,8 @@
 #IMPORTING MODULES
 import pygame
-from pygame.locals import *
 import random
 import sys
+
 white = (250,250,250)
 black = (0,0,0)
 #SETTING UP STUFF
@@ -47,26 +47,29 @@ class GridSquare(object):
         self.internal_column = internal_column
         self.touching = touching
         self.clicked = clicked
-        self.right = 0
-        self.up = 0
-        self.rect = pygame.Rect([int(self.internal_row),int(self.internal_column),25,25])
+        self.cameraoffset = [0,0]
+    
     def draw(self):
-        pygame.draw.rect(screen,[255,0,255],self.rect,0)
-    def camera(self):
-        self.internal_row = self.right+self.internal_row
-        self.internal_column = self.up+self.internal_column
+        self.rect = pygame.Rect([int(self.internal_row) + self.cameraoffset[0],int(self.internal_column) + self.cameraoffset[1],50,50])
+        pygame.draw.rect(screen,[0,0,255],self.rect,0)
+    def cameraupdate(self):
         if keys[0] == True:
-            self.up += 1
+            self.internal_column += 4
+            self.cameraoffset[1] = 0
         elif keys[1] == True:
-            self.right -= 1
+            self.internal_row += 4
+            self.cameraoffset[0] = 0
         elif keys[2] == True:
-            self.up -= 1
+            self.internal_column -= 4
+            self.cameraoffset[1] = 0
         elif keys[3] == True:
-             self.right += 1
+            self.internal_row -= 4
+            self.cameraoffset[0] = 0
+        
 #BUTTONS
 grid = []
-for i in range(100,200,26):
-    for k in range(100,200,26):
+for i in range(-100,900,52):
+    for k in range(-100,700,52):
         grid.append(GridSquare(i,k,False,False))    
 titlescreen = Button(300,300,200,100,"Start",False,False)
 #MAIN LOOP STARTS HERE
@@ -78,11 +81,14 @@ while True:
       titlescreen.click()
       #EVENTS
     for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
         if titlescreen.touching == True and event.type == pygame.MOUSEBUTTONDOWN:
             titlescreen.clicked = True
         else:
             titlescreen.clicked = False
-        if event.type == KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
                 keys[0] = True
             elif event.key == pygame.K_a:
@@ -91,14 +97,23 @@ while True:
                 keys[2] = True
             elif event.key == pygame.K_d:
                 keys[3] = True
-           
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_w:
+                keys[0]=False
+            elif event.key == pygame.K_a:
+                keys[1]=False
+            elif event.key == pygame.K_s:
+                keys[2]=False
+            elif event.key == pygame.K_d:
+                keys[3]=False
+            elif event.key == pygame.K_SPACE:
+                shooting = False
     if titlescreen.clicked == True:
         scene = "game"
     if scene == "game":
         screen.fill(black)
         for grids in grid:
+           grids.cameraupdate()
            grids.draw()
-    for grids in grid:
-        grids.camera()
-        
+           
     pygame.display.flip()
