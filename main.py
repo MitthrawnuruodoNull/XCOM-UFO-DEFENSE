@@ -50,8 +50,8 @@ class GridSquare(object):
         pygame.draw.rect(screen,[255,0,255],self.rect,0)
 #BUTTONS
 grid = []
-for i in range(100,600,26):
-    for k in range(100,800,26):
+for i in range(100,200,26):
+    for k in range(100,200,26):
         grid.append(GridSquare(i,k,False,False))    
 titlescreen = Button(300,300,200,100,"Start",False,False)
 #MAIN LOOP STARTS HERE
