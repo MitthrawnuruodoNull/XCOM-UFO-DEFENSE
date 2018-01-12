@@ -68,6 +68,7 @@ class GridSquare(object):
         
 #BUTTONS
 grid = []
+
 for i in range(-100,900,52):
     for k in range(-100,700,52):
         grid.append(GridSquare(i,k,False,False))    
