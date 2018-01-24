@@ -53,19 +53,19 @@ class GridSquare(object):
     
     def draw(self):
         self.rect = pygame.Rect([int(self.internal_row) + self.cameraoffset[0],int(self.internal_column) + self.cameraoffset[1],50,50])
-        pygame.draw.rect(screen,[0,0,255],self.rect,0)
+        pygame.draw.rect(screen,[0,255,0],self.rect,0)
     def cameraupdate(self):
         if keys[0] == True:
-            self.internal_column += 16
+            self.internal_column += 28
             self.cameraoffset[1] = 0
         elif keys[1] == True:
-            self.internal_row += 16
+            self.internal_row += 28
             self.cameraoffset[0] = 0
         elif keys[2] == True:
-            self.internal_column -= 16
+            self.internal_column -= 28
             self.cameraoffset[1] = 0
         elif keys[3] == True:
-            self.internal_row -= 16
+            self.internal_row -= 28
             self.cameraoffset[0] = 0 
 #class Soldiers(pygame.sprite.Sprite):
         
@@ -86,6 +86,9 @@ for i in range(-100,900,52):
 titlescreen = Button(300,300,200,100,"Start",False,False,(255,255,255),(0,0,0))
 GUI = Button(0,500,800,100,"",False,False,(255,255,255),(0,0,0))
 Move = Button(0,500,200,100,"Move",False,False,(0,0,0),(255,255,255))
+Attack = Button(200,500,200,100,"Attack",False,False,(0,0,0),(255,255,255))
+Turn = Button(400,500,200,100,"Turn",False,False,(0,0,0),(255,255,255))
+Quit = Button(600,500,200,100,"Quit",False,False,(0,0,0),(255,255,255))
 #MAIN LOOP STARTS HERE
 while True:
     if scene == "start":
@@ -131,6 +134,8 @@ while True:
            grids.draw()
            GUI.draw()
            Move.draw()
+           Attack.draw()
+           Turn.draw()
+           Quit.draw()
            
     pygame.display.flip()
-
