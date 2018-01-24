@@ -20,7 +20,7 @@ screen = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('X-COM UFO DEFENSE')
 #SETTING UP BUTTON CLASS
 class Button(object):
-    def __init__(self, x, y, width, height,text,touching,clicked):
+    def __init__(self, x, y, width, height,text,touching,clicked,color,textcolor):
         self.x = x
         self.y = y
         self.width = width
@@ -29,10 +29,12 @@ class Button(object):
         self.rect = pygame.Rect([int(self.x),int(self.y),int(self.width),int(self.height)])
         self.touching = touching
         self.clicked = clicked
+        self.color = color
+        self.textcolor = textcolor
     def draw(self):
         #DRAW FUNCTION(MAY NEED WORK ON THE TEXT FORMULA)
-        text1 = myfont.render(str(self.text), 1, (black))
-        pygame.draw.rect(screen,[255,255,255],self.rect,0)
+        text1 = myfont.render(str(self.text), 1, (self.textcolor[0],self.textcolor[1],self.textcolor[2]))
+        pygame.draw.rect(screen,(self.color[0],self.color[1],self.color[2]),self.rect,0)
         screen.blit(text1, (self.x + self.width/3,self.y + self.height/3))
     def click(self):
         #EASY CLICK DETECTION
@@ -54,51 +56,36 @@ class GridSquare(object):
         pygame.draw.rect(screen,[0,0,255],self.rect,0)
     def cameraupdate(self):
         if keys[0] == True:
-            self.internal_column += 4
+            self.internal_column += 16
             self.cameraoffset[1] = 0
         elif keys[1] == True:
-            self.internal_row += 4
+            self.internal_row += 16
             self.cameraoffset[0] = 0
         elif keys[2] == True:
-            self.internal_column -= 4
+            self.internal_column -= 16
             self.cameraoffset[1] = 0
         elif keys[3] == True:
-            self.internal_row -= 4
-            self.cameraoffset[0] = 0
-class spritesheet(object):
-    def __init__(self, filename):
+            self.internal_row -= 16
+            self.cameraoffset[0] = 0 
+#class Soldiers(pygame.sprite.Sprite):
         
-    # Load a specific image from a specific rectangle
-        def image_at(self, rectangle, colorkey = None):
-            rect = pygame.Rect(rectangle)
-            image = pygame.Surface(rect.size).convert()
-            image.blit(self.sheet, (0, 0), rect)
-            if colorkey is not None:
-                if colorkey is -1:
-                    colorkey = image.get_at((0,0))
-                image.set_colorkey(colorkey, pygame.RLEACCEL)
-            return image
-    # Load a whole bunch of images and return them as a list
-        def images_at(self, rects, colorkey = None): 
-            return [self.image_at(rect, colorkey) for rect in rects]
-    # Load a whole strip of images
-        def load_strip(self, rect, image_count, colorkey = None):
-            tups = [(rect[0]+rect[2]*x, rect[1], rect[2], rect[3])
-                for x in range(image_count)]
-            return self.images_at(tups, colorkey)
-ss = spritesheet('IMG_0195.PNG')    
-class Soldiers(pygame.sprite.Sprite):
-     def __init__(self):
-         self.image = pygame.image.load("")
-         self.x = 0
-         self.y = 0
+    #def __init__(self,x,y,hp,tp,acc):
+         #self.image = pygame.image.load('Soldier.bmp')
+         #self.x = x
+         #self.y = y
+         #self.hp = hp
+    #def draw():
+        #screen.blit(self.image,self.x,self.y)
+#new = Soldiers(100,100,100,100,100)
         
 #BUTTONS
 grid = []
 for i in range(-100,900,52):
     for k in range(-100,700,52):
         grid.append(GridSquare(i,k,False,False))    
-titlescreen = Button(300,300,200,100,"Start",False,False)
+titlescreen = Button(300,300,200,100,"Start",False,False,(255,255,255),(0,0,0))
+GUI = Button(0,500,800,100,"",False,False,(255,255,255),(0,0,0))
+Move = Button(0,500,200,100,"Move",False,False,(0,0,0),(255,255,255))
 #MAIN LOOP STARTS HERE
 while True:
     if scene == "start":
@@ -142,6 +129,8 @@ while True:
         for grids in grid:
            grids.cameraupdate()
            grids.draw()
+           GUI.draw()
+           Move.draw()
            
     pygame.display.flip()
 
